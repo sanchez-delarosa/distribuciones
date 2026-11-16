@@ -172,6 +172,7 @@ export class Mapa {
       const mat = materiaDe(n.d);
       n.brillo.material.color.set(mat.color);
       n.brillo.material.blending = tema.esClaro ? THREE.NormalBlending : THREE.AdditiveBlending;
+      n.tarjeta?.style.setProperty('--color-materia', mat.color);
     }
     if (this.particulas) {
       this.particulas.material.blending = tema.esClaro ? THREE.NormalBlending : THREE.AdditiveBlending;

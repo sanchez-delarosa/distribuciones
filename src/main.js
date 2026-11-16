@@ -27,6 +27,10 @@ async function iniciar() {
     for (const b of cajaTemas.querySelectorAll('.btn-tema')) {
       b.classList.toggle('activo', b.dataset.tema === t.id);
     }
+    for (const li of document.querySelectorAll('li[data-materia]')) {
+      const m = MATERIAS[li.dataset.materia];
+      if (m) li.style.setProperty('--color-materia', m.color);
+    }
   }
   for (const t of Object.values(TEMAS)) {
     selectTema.add(new Option(t.nombre, t.id));
