@@ -6,7 +6,7 @@
     <title>Relaciones entre distribuciones univariadas</title>
     <meta name="description" content="Mapa interactivo de distribuciones de probabilidad univariadas y sus relaciones, en español, para la licenciatura en Actuaría." />
     <link rel="stylesheet" href="./vendor/katex/katex.min.css" />
-    <link rel="stylesheet" href="./css/estilos.css?v=5" />
+    <link rel="stylesheet" href="./css/estilos.css?v=6" />
     <script type="importmap">
       {
         "imports": {
@@ -36,6 +36,7 @@
         </div>
         <div id="temas" class="selector-temas" role="group" aria-label="Muestras de temas"></div>
       </div>
+      <button id="btn-juego-cabecera" class="boton boton-juego-cabecera" type="button">🎮 Modo Juego (Quiz)</button>
     </header>
 
     <aside class="tarjeta plegable" id="leyenda">
@@ -71,8 +72,11 @@
     <div id="controles" class="tarjeta">
       <button id="btn-encuadrar" class="boton secundario" title="Ver todo el mapa">⤢ Encuadrar</button>
       <button id="btn-etiquetas" class="boton secundario" title="Mostrar u ocultar las condiciones sobre las flechas" aria-pressed="false">Condiciones</button>
+      <button id="btn-juego" class="boton" title="Abrir quiz de opción múltiple">🎮 Modo Juego</button>
       <span class="ayuda">Arrastra para mover · rueda para acercar · clic para ver detalles</span>
     </div>
+
+    <div id="modal-juego" class="modal-juego" hidden></div>
 
     <a id="aviso-validacion" class="aviso-validacion" href="./validar.html" hidden></a>
 
@@ -85,6 +89,6 @@
       Inspirado en L. M. Leemis y J. T. McQueston (2008), «Univariate Distribution Relationships», <em>The American Statistician</em>, 62(1), 45-53.
     </footer>
 
-    <script type="module" src="./src/main.js?v=5"></script>
+    <script type="module" src="./src/main.js?v=6"></script>
   </body>
 </html>

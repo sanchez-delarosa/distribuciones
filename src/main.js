@@ -6,6 +6,7 @@ import { calcularLayout } from './grafo/layout.js';
 import { Mapa } from './grafo/mapa.js';
 import { buscarCamino } from './grafo/caminos.js';
 import { Panel } from './ui/panel.js';
+import { JuegoQuiz } from './ui/juego.js';
 import { escaparHTML } from './ui/tex.js';
 import { TEMAS, temaActual, aplicarTema } from './ui/temas.js';
 
@@ -293,7 +294,13 @@ async function iniciar() {
   });
   document.getElementById('camino-limpiar').addEventListener('click', limpiarSeleccion);
 
-  // 8. Controles inferiores.
+  // 8. Controles inferiores y Modo Juego.
+  const juego = new JuegoQuiz(document.getElementById('modal-juego'), {
+    alVerNodo: (id) => irANodo(id),
+  });
+  document.getElementById('btn-juego').addEventListener('click', () => juego.abrir());
+  document.getElementById('btn-juego-cabecera').addEventListener('click', () => juego.abrir());
+
   document.getElementById('btn-encuadrar').addEventListener('click', () => mapa.encuadrar(true));
   const btnEtiquetas = document.getElementById('btn-etiquetas');
   btnEtiquetas.addEventListener('click', () => {
