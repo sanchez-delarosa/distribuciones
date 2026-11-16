@@ -296,8 +296,8 @@ body {
 
 .selector-temas {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  gap: 5px;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
 }
 
 .btn-tema {

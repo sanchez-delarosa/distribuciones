@@ -18,7 +18,7 @@ Mapa interactivo en español de **57 distribuciones de probabilidad** (16 discre
   - Deslizadores de parámetros en tiempo real con cálculo de $E[X]$, $\operatorname{Var}(X)$, $\operatorname{DE}(X)$ y $\operatorname{CV}(X)$.
   - Fórmulas completas: soporte, fmp/fdp, FDA, función de supervivencia $S(x)$, tasa de riesgo / fuerza de mortalidad $h(x)$ o $\mu_{x+t}$, FGM, FGP, $\operatorname{VaR}_p$, $\operatorname{TVaR}_p$, esperanza limitada $E[X \wedge d]$, **clase $(a, b, 0)$ y $(a, b, 1)$ de Panjer**, y relaciones entrantes y salientes.
 - **Buscador de caminos dirigidos:** encuentra la secuencia más corta de transformaciones, casos especiales o límites para ir de una distribución a otra.
-- **10 temas visuales clásicos** (oscuros y claros): *Dracula*, *One Dark*, *Catppuccin*, *Tokyo Night*, *Nord*, *Synthwave '84*, *Night Owl*, *Solarized*, *Solarized Clear* y *Matcha*.
+- **7 temas visuales clásicos** (oscuros y claros): *Cobalt2*, *Catppuccin*, *Gruvbox Material*, *Solarized Clear*, *Monokai*, *Atom One Light* y *Dracula At Night*.
 - **Validador matemático y numérico integrado (`validar.html`):** verifica automáticamente referencias, sintaxis $\LaTeX$ y que cada densidad sume o integre a $1$ y coincida numéricamente con sus fórmulas cerradas de media y varianza.
 
 ---
