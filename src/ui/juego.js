@@ -50,6 +50,8 @@ export class JuegoQuiz {
     this.modal = modal;
     this.op = op;
     this.materiasSeleccionadas = new Set(Object.keys(MATERIAS));
+    /** @type {'sin-relaciones' | 'relaciones' | 'mixto'} */
+    this.modoPreguntas = 'sin-relaciones';
     this.aciertos = 0;
     this.errores = 0; // máximo 1 error permitido; al 2.º error termina la partida
     this.maxErrores = 1;
@@ -104,6 +106,24 @@ export class JuegoQuiz {
           <div><span>Distribuciones activas</span><strong id="juego-total-dist">${totalDist}</strong></div>
         </div>
 
+        <div class="juego-seccion-modo">
+          <h3>Modo de preguntas</h3>
+          <div class="juego-modos" role="radiogroup" aria-label="Modo de preguntas">
+            <button type="button" class="chip-modo-juego ${this.modoPreguntas === 'sin-relaciones' ? 'activo' : ''}" data-modo="sin-relaciones">
+              <strong>Sin relaciones</strong>
+              <small>Solo momentos (E[X], Var), densidad, FDA (CDF), FGM (MGF) y supervivencia</small>
+            </button>
+            <button type="button" class="chip-modo-juego ${this.modoPreguntas === 'relaciones' ? 'activo' : ''}" data-modo="relaciones">
+              <strong>Relaciones</strong>
+              <small>Transformaciones, sumas, límites, mezclas y casos especiales entre distribuciones</small>
+            </button>
+            <button type="button" class="chip-modo-juego ${this.modoPreguntas === 'mixto' ? 'activo' : ''}" data-modo="mixto">
+              <strong>Mixto</strong>
+              <small>Combina fórmulas/momentos y relaciones</small>
+            </button>
+          </div>
+        </div>
+
         <div class="juego-seccion-materias">
           <div class="juego-materias-arriba">
             <h3>Elige qué materias entran en el quiz</h3>
@@ -139,6 +159,15 @@ export class JuegoQuiz {
     const btnIniciar = this.modal.querySelector('#juego-iniciar');
     const aviso = this.modal.querySelector('#juego-aviso');
     const lblTotal = this.modal.querySelector('#juego-total-dist');
+
+    for (const bModo of this.modal.querySelectorAll('.chip-modo-juego')) {
+      bModo.addEventListener('click', () => {
+        this.modoPreguntas = /** @type {any} */ (bModo.dataset.modo);
+        for (const otro of this.modal.querySelectorAll('.chip-modo-juego')) {
+          otro.classList.toggle('activo', otro === bModo);
+        }
+      });
+    }
 
     const actualizarEstadoMaterias = () => {
       for (const b of this.modal.querySelectorAll('.chip-juego-materia')) {
@@ -189,26 +218,39 @@ export class JuegoQuiz {
     const idsActivos = new Set(activas.map((d) => d.id));
     const relsActivas = RELS.filter((r) => idsActivos.has(r.de) && idsActivos.has(r.a));
 
-    // Tipos posibles de pregunta con pesos equilibrados
-    const generadores = [
-      () => this.pregFormulaDirecta(activas, 'media', '¿Cuál es la esperanza matemática $E[X]$ de la distribución'),
-      () => this.pregFormulaDirecta(activas, 'varianza', '¿Cuál es la varianza $\\operatorname{Var}(X)$ de la distribución'),
-      () => this.pregFormulaDirecta(activas, 'densidad', '¿Cuál es la función de masa o densidad de la distribución'),
+    const genSinRelaciones = [
+      () => this.pregFormulaDirecta(activas, 'media', '¿Cuál es la esperanza matemática $E[X]$ de la distribución', 'Esperanza E[X]'),
+      () => this.pregFormulaDirecta(activas, 'varianza', '¿Cuál es la varianza $\\operatorname{Var}(X)$ de la distribución', 'Varianza Var(X)'),
+      () => this.pregFormulaDirecta(activas, 'densidad', '¿Cuál es la función de masa o densidad de la distribución', 'Densidad / Masa'),
+      () => this.pregFormulaDirecta(activas, 'fda', '¿Cuál es la función de distribución acumulada $F(x)$ (FDA / CDF) de la distribución', 'FDA F(x)'),
+      () => this.pregFormulaDirecta(activas, 'supervivencia', '¿Cuál es la función de supervivencia $S(x)$ de la distribución', 'Supervivencia S(x)'),
       () => this.pregInversaDensidad(activas),
       () => this.pregInversaMediaVarianza(activas),
       () => this.pregExtraOGeneradora(activas),
+    ];
+
+    const genRelaciones = [
       () => (relsActivas.length >= 4 ? this.pregRelacionDestino(activas, relsActivas) : null),
       () => (relsActivas.length >= 4 ? this.pregRelacionCondicion(relsActivas) : null),
     ];
+
+    let generadores;
+    if (this.modoPreguntas === 'sin-relaciones') {
+      generadores = genSinRelaciones;
+    } else if (this.modoPreguntas === 'relaciones') {
+      generadores = genRelaciones.length && relsActivas.length >= 4 ? genRelaciones : genSinRelaciones;
+    } else {
+      generadores = [...genSinRelaciones, ...genRelaciones];
+    }
 
     for (const gen of barajar(generadores)) {
       const p = gen();
       if (p) return p;
     }
-    return this.pregFormulaDirecta(activas, 'media', '¿Cuál es la esperanza matemática $E[X]$ de la distribución');
+    return this.pregFormulaDirecta(activas, 'media', '¿Cuál es la esperanza matemática $E[X]$ de la distribución', 'Esperanza E[X]');
   }
 
-  pregFormulaDirecta(activas, campo, prefijo) {
+  pregFormulaDirecta(activas, campo, prefijo, etiquetaCat) {
     const conCampo = activas.filter((d) => {
       const f = d.formulas[campo];
       return f && !f.includes('No existe') && !f.includes('\\infty');
@@ -226,7 +268,7 @@ export class JuegoQuiz {
     return {
       nodoId: d.id,
       materia: mat,
-      categoria: campo === 'media' ? 'Esperanza E[X]' : campo === 'varianza' ? 'Varianza Var(X)' : 'Densidad / Masa',
+      categoria: etiquetaCat ?? (campo === 'media' ? 'Esperanza E[X]' : campo === 'varianza' ? 'Varianza Var(X)' : 'Densidad / Masa'),
       enunciado: `${texto(prefijo)} <strong>${escaparHTML(d.nombre)}</strong> (${tex(notacionCorta(d))})?`,
       formulaDestacada: null,
       correcta,
