@@ -340,7 +340,7 @@ export class JuegoQuiz {
       correcta,
       opciones: barajar([correcta, ...distractores]),
       esTex: false,
-      explicacion: r.explicacion,
+      explicacion: texto(r.explicacion),
     };
   }
 
@@ -362,7 +362,7 @@ export class JuegoQuiz {
       correcta,
       opciones: barajar([correcta, ...distractores]),
       esTex: true,
-      explicacion: r.explicacion,
+      explicacion: texto(r.explicacion),
     };
   }
 
@@ -466,7 +466,7 @@ export class JuegoQuiz {
               : '⚠ Respuesta incorrecta · Te queda 0 margen de error (1/1 error usado)'
         }
       </div>
-      <p class="jr-exp">${texto(p.explicacion)}</p>
+      <p class="jr-exp">${p.explicacion}</p>
       <div class="jr-acciones">
         <button type="button" class="boton secundario" id="juego-ver-mapa">🔍 Ver en el mapa</button>
         <button type="button" class="boton" id="juego-continuar">
