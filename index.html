@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Relaciones entre distribuciones univariadas</title>
+    <meta name="description" content="Mapa interactivo de distribuciones de probabilidad univariadas y sus relaciones, en español, para la licenciatura en Actuaría." />
+    <link rel="stylesheet" href="./vendor/katex/katex.min.css" />
+    <link rel="stylesheet" href="./css/estilos.css?v=5" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./vendor/three/three.module.js",
+          "three/addons/": "./vendor/three/addons/",
+          "katex": "./vendor/katex/katex.mjs"
+        }
+      }
+    </script>
+    <script src="./vendor/elk/elk.bundled.js"></script>
+  </head>
+  <body>
+    <div id="escena" aria-label="Mapa de relaciones entre distribuciones"></div>
+    <div id="tooltip" class="tooltip" hidden></div>
+
+    <header class="tarjeta" id="cabecera">
+      <h1>Distribuciones univariadas</h1>
+      <p class="subtitulo">Mapa de relaciones · Actuaría</p>
+      <div class="buscador">
+        <input id="buscar" type="search" placeholder="Buscar distribución…" autocomplete="off" aria-label="Buscar distribución" />
+        <ul id="sugerencias" class="sugerencias" role="listbox" hidden></ul>
+      </div>
+      <div class="barra-temas">
+        <div class="fila-selector-tema">
+          <label for="tema-select" class="etq-tema">Tema:</label>
+          <select id="tema-select" class="select-tema" aria-label="Seleccionar tema visual"></select>
+        </div>
+        <div id="temas" class="selector-temas" role="group" aria-label="Muestras de temas"></div>
+      </div>
+    </header>
+
+    <aside class="tarjeta plegable" id="leyenda">
+      <button class="plegar" aria-expanded="true">Leyenda y filtros</button>
+      <div class="contenido">
+        <h3>Materias <small>(clic para filtrar)</small></h3>
+        <div class="fila-acumulado">
+          <label for="materia-hasta">Acumulado:</label>
+          <select id="materia-hasta" class="select-acumulado" aria-label="Filtrar materias acumuladas hasta un curso"></select>
+        </div>
+        <ul class="lista-leyenda" id="filtros-materia"></ul>
+        <p class="nota-zonas">Arriba: <strong>discretas</strong> · Abajo: <strong>continuas</strong></p>
+        <h3>Relaciones <small>(clic para ocultar)</small></h3>
+        <ul class="lista-leyenda" id="filtros"></ul>
+        <h3>Propiedades</h3>
+        <ul class="lista-propiedades" id="lista-propiedades"></ul>
+      </div>
+    </aside>
+
+    <aside class="tarjeta plegable plegado" id="camino">
+      <button class="plegar" aria-expanded="false">Buscar camino</button>
+      <div class="contenido">
+        <p class="ayuda">¿Cómo se llega de una distribución a otra siguiendo las flechas?</p>
+        <label>De <select id="camino-de"></select></label>
+        <label>A <select id="camino-a"></select></label>
+        <div class="fila-botones">
+          <button id="camino-buscar" class="boton">Buscar</button>
+          <button id="camino-limpiar" class="boton secundario">Limpiar</button>
+        </div>
+      </div>
+    </aside>
+
+    <div id="controles" class="tarjeta">
+      <button id="btn-encuadrar" class="boton secundario" title="Ver todo el mapa">⤢ Encuadrar</button>
+      <button id="btn-etiquetas" class="boton secundario" title="Mostrar u ocultar las condiciones sobre las flechas" aria-pressed="false">Condiciones</button>
+      <span class="ayuda">Arrastra para mover · rueda para acercar · clic para ver detalles</span>
+    </div>
+
+    <a id="aviso-validacion" class="aviso-validacion" href="./validar.html" hidden></a>
+
+    <aside id="panel" class="panel" aria-live="polite" hidden>
+      <button id="panel-cerrar" class="panel-cerrar" aria-label="Cerrar panel">×</button>
+      <div id="panel-contenido"></div>
+    </aside>
+
+    <footer id="credito">
+      Inspirado en L. M. Leemis y J. T. McQueston (2008), «Univariate Distribution Relationships», <em>The American Statistician</em>, 62(1), 45-53.
+    </footer>
+
+    <script type="module" src="./src/main.js?v=5"></script>
+  </body>
+</html>

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Validación de datos · Distribuciones univariadas</title>
+    <link rel="stylesheet" href="./vendor/katex/katex.min.css" />
+    <link rel="stylesheet" href="./css/estilos.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "katex": "./vendor/katex/katex.mjs"
+        }
+      }
+    </script>
+  </head>
+  <body class="pagina-validar">
+    <main class="contenedor-validar">
+      <p><a href="./index.html">← Volver al mapa</a></p>
+      <h1>Validación de datos</h1>
+      <div id="salida"></div>
+    </main>
+    <script type="module">
+      import { validarDatos } from './src/datos/validar.js';
+      const r = validarDatos();
+      const s = document.getElementById('salida');
+      s.innerHTML = `
+        <p class="estado-val ${r.ok ? 'ok' : 'err'}">
+          ${r.ok ? '✓ Todos los controles pasaron' : `✕ ${r.errores.length} problema(s) detectado(s)`}
+        </p>
+        <p>${r.resumen.distribuciones} distribuciones (${r.resumen.discretas} discretas, ${r.resumen.continuas} continuas) y ${r.resumen.relaciones} relaciones verificadas: referencias, sintaxis LaTeX, suma/integral de densidad = 1, media y varianza numéricas frente a las fórmulas cerradas.</p>
+        ${r.errores.length ? `<ul>${r.errores.map((e) => `<li>${e}</li>`).join('')}</ul>` : ''}
+      `;
+    </script>
+  </body>
+</html>
